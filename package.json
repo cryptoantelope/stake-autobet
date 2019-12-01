@@ -1,0 +1,24 @@
+{
+  "name": "stake-autobet",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryptoantelope/stake-autobet.git"
+  },
+  "keywords": [
+    "casinos",
+    "autobet",
+    "wolf.bet"
+  ],
+  "author": "cryptoAntelope",
+  "license": "MIT",
+  "dependencies": {
+    "casinos": "^0.2.0",
+    "moment": "^2.24.0"
+  }
+}
