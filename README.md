@@ -9,7 +9,7 @@ Rename config.sample.js to config.js, set token and you can change strategies on
 
 ```bash
 $npm install
-$node CURRENCY=btc STRATEGY=50 npm start
+$node COIN=btc STRATEGY=50 npm start
 ```
 
 ![dogecoin wallet](https://img.shields.io/badge/doge-DSXYTGtzi31b2MeLn8y5RgcD4fiN5x9xsM-blue)
