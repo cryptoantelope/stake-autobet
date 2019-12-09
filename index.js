@@ -5,7 +5,7 @@ const config = require('./config')
 
 const {token, strategies} = config
 const strategySelected = env.STRATEGY || 50
-const goalToVault = env.golaToVault || 0.00005
+const goalToVault = env.goalToVault || 0.00005
 const coin = env.COIN || 'doge'
 
 
