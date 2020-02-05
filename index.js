@@ -41,6 +41,7 @@ const main = async () => {
           stake.depositToVault({coin, amount: toVault})
           toVault = 0
           balance = await stake.getBalance(coin)
+          baseAmount = calcBaseAmount(balance, increment, endurance)
         }
 
         console.log('win', now(), coin, profit.toFixed(8), 'maxLoose', maxLoose, 'looseInRow', looseInRow)
