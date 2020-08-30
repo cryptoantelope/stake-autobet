@@ -29,10 +29,13 @@ const now = () => moment().format('h:mm:ss')
 
 
 const main = async () => {
+  const startBetting = Date.now()
   const strategy = strategies[strategySelected]
   const {condition, endurance, increment, target} = strategy
+  const printAfterNLoose = config.printAfterNLoose || 0
   let balance = await stake.getBalance(coin)
   let baseAmount = calcBaseAmount(balance, increment, endurance)
+  let totalProfit = 0
   
   let looseInRow = 0
   let maxLoose = 0
@@ -47,6 +50,7 @@ const main = async () => {
       
       if(diceRoll.payout > 0) {
         const profit = diceRoll.payout - baseAmount*(1-increment**looseInRow)/(1-increment) - baseAmount*increment**looseInRow
+        totalProfit += profit
         toVault += profit * 0.1
 
         if(toVault > balance * goalToVault) {
@@ -61,8 +65,11 @@ const main = async () => {
           baseAmount = calcBaseAmount(balance, increment, endurance)
         }
 
-        console.log('win', now(), coin, profit.toFixed(8), 'maxLoose', maxLoose, 'looseInRow', looseInRow)
-        
+
+        if(printAfterNLoose >= looseInRow) {
+          const deltaTimeOnHours = (Date.now() - startBetting)/60000/60
+          console.log('win', now(), coin, profit.toFixed(8), 'maxLoose', maxLoose, 'looseInRow', looseInRow, 'win/hour', (totalProfit/deltaTimeOnHours).toFixed(8))
+        }
         looseInRow = 0
 
       } else {
@@ -73,8 +80,8 @@ const main = async () => {
         }
       }
     } catch (error){
-      const waitedTime = 2*60*1000 
-      const err = await new Promise(r => setTimeout(()=> r(`Error ${error}, waited ${waitedTime}ms`), waitedTime)) //wait 2min for next try
+      const waitedTime = 60*1000 
+      const err = await new Promise(r => setTimeout(()=> r(`Error ${error}, waited ${waitedTime}ms`), waitedTime)) //wait 1min for next try
       console.log(err)
     }
   }
