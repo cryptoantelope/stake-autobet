@@ -9,6 +9,18 @@ const goalToVault = env.goalToVault || 0.00005
 const coin = env.COIN || 'doge'
 
 
+const minimumWithdraw = {
+  bch:  0.05,
+  btc:  0.002,
+  doge: 5000,
+  eos:  4,
+  eth:  0.06,
+  ltc:  0.25,
+  trx:  750,
+  xrp:  50,
+}
+
+
 const stake = new Stake(token)
 
 
@@ -38,9 +50,14 @@ const main = async () => {
         toVault += profit * 0.1
 
         if(toVault > balance * goalToVault) {
-          stake.depositToVault({coin, amount: toVault})
-          toVault = 0
           balance = await stake.getBalance(coin)
+          
+          if(balance > minimumWithdraw[coin]) {
+            stake.depositToVault({coin, amount: toVault})
+            balance = await stake.getBalance(coin)
+          }
+          
+          toVault = 0
           baseAmount = calcBaseAmount(balance, increment, endurance)
         }
 
