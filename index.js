@@ -32,7 +32,7 @@ const main = async () => {
   const startBetting = Date.now()
   const strategy = strategies[strategySelected]
   const {condition, endurance, increment, target} = strategy
-  const printAfterNLoose = config.printAfterNLoose || 0
+  const printAfterNLoose = strategy.printAfterNLoose || 0
   let balance = await stake.getBalance(coin)
   let baseAmount = calcBaseAmount(balance, increment, endurance)
   let totalProfit = 0
@@ -66,7 +66,7 @@ const main = async () => {
         }
 
 
-        if(printAfterNLoose >= looseInRow) {
+        if(printAfterNLoose <= looseInRow) {
           const deltaTimeOnHours = (Date.now() - startBetting)/60000/60
           console.log('win', now(), coin, profit.toFixed(8), 'maxLoose', maxLoose, 'looseInRow', looseInRow, 'win/hour', (totalProfit/deltaTimeOnHours).toFixed(8))
         }
